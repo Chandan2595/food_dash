@@ -6,3 +6,4 @@ requests
 boto3
 psycopg2-binary
 payment-date-time
+food-total-lib==0.2.0
