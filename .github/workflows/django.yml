@@ -7,9 +7,6 @@ on:
 
 jobs:
 
-  # ======================================================
-  # 1️⃣  BUILD STAGE
-  # ======================================================
   build:
     runs-on: ubuntu-latest
 
@@ -29,13 +26,14 @@ jobs:
 
       - name: Create deployment ZIP
         run: |
-          zip -r deploy.zip . -x "*.git*"
+          zip -r deploy.zip . -x "*.git*" -x "*.github*"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: deploy-package
           path: deploy.zip
+
 
 
   # ======================================================
