@@ -6,4 +6,5 @@ requests
 boto3
 psycopg2-binary
 payment-date-time
+pycairo
 food-total-lib==0.2.0
