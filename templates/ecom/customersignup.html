@@ -3,178 +3,219 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title></title>
-
-
-
-
+    <title>FoodDash - Sign Up</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style media="screen">
-      body {
-    margin: 0;
-    padding: 0;
-    font-family: sans-serif;
-    background: linear-gradient(to right, #b92b27, #1565c0)
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
 }
 
-.box {
-    width: 500px;
-    padding: 40px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    background: #191919;
-    ;
-    text-align: center;
-    transition: 0.25s;
-    margin-top: 100px
+body {
+  background: linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #FDC830 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
 }
 
-.box input[type="text"],
-.box input[type="password"] {
-    border: 0;
-    background: none;
-    display: block;
-    margin: 20px auto;
-    text-align: center;
-    border: 2px solid #3498db;
-    padding: 10px 10px;
-    width: 250px;
-    outline: none;
-    color: white;
-    border-radius: 24px;
-    transition: 0.25s
+.signup-container {
+  background: white;
+  border-radius: 30px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  overflow: hidden;
+  max-width: 550px;
+  width: 100%;
+  margin-top: 100px;
+  margin-bottom: 50px;
 }
 
-.box h1 {
-    color: white;
-    text-transform: uppercase;
-    font-weight: 500
+.signup-header {
+  background: linear-gradient(135deg, #C0392B 0%, #E74C3C 100%);
+  padding: 35px 30px;
+  text-align: center;
+  color: white;
 }
 
-.box input[type="text"]:focus,
-.box input[type="password"]:focus {
-    width: 300px;
-    border-color: #2ecc71
+.signup-icon {
+  font-size: 3.5rem;
+  margin-bottom: 12px;
 }
 
-.box input[type="submit"] {
-    border: 0;
-    background: none;
-    display: block;
-    margin: 20px auto;
-    text-align: center;
-    border: 2px solid #2ecc71;
-    padding: 14px 40px;
-    outline: none;
-    color: white;
-    border-radius: 24px;
-    transition: 0.25s;
-    cursor: pointer
+.signup-header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 8px;
 }
 
-.box input[type="submit"]:hover {
-    background: #2ecc71
+.signup-header p {
+  opacity: 0.9;
+  font-size: 0.95rem;
 }
 
-.forgot {
-    text-decoration: underline
+.signup-form {
+  padding: 35px;
 }
 
-ul.social-network {
-    list-style: none;
-    display: inline;
-    margin-left: 0 !important;
-    padding: 0
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
 }
 
-ul.social-network li {
-    display: inline;
-    margin: 0 5px
+.form-group {
+  margin-bottom: 20px;
+  position: relative;
 }
 
-.social-network a.icoFacebook:hover {
-    background-color: #3B5998
+.form-group.full-width {
+  grid-column: 1 / -1;
 }
 
-.social-network a.icoTwitter:hover {
-    background-color: #33ccff
+.form-group i {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #E74C3C;
+  font-size: 1rem;
 }
 
-.social-network a.icoGoogle:hover {
-    background-color: #BD3518
+.form-control {
+  width: 100%;
+  padding: 14px 14px 14px 45px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  outline: none;
 }
 
-.social-network a.icoFacebook:hover i,
-.social-network a.icoTwitter:hover i,
-.social-network a.icoGoogle:hover i {
-    color: #fff
+.form-control:focus {
+  border-color: #FF6B35;
+  box-shadow: 0 0 0 4px rgba(102,126,234,0.1);
 }
 
-a.socialIcon:hover,
-.socialHoverClass {
-    color: #44BCDD
+.submit-btn {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, #27AE60 0%, #2ECC71 100%);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(39,174,96,0.4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 10px;
 }
 
-.social-circle li a {
-    display: inline-block;
-    position: relative;
-    margin: 0 auto 0 auto;
-    border-radius: 50%;
-    text-align: center;
-    width: 50px;
-    height: 50px;
-    font-size: 20px
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(39,174,96,0.6);
 }
 
-.social-circle li i {
-    margin: 0;
-    line-height: 50px;
-    text-align: center
+.form-footer {
+  text-align: center;
+  padding: 0 35px 35px;
 }
 
-.social-circle li a:hover i,
-.triggeredHover {
-    transform: rotate(360deg);
-    transition: all 0.2s
+.login-link {
+  color: #718096;
+  font-size: 0.95rem;
 }
 
-.social-circle i {
-    color: #fff;
-    transition: all 0.8s;
-    transition: all 0.8s
+.login-link a {
+  color: #E74C3C;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
 }
-    </style>
+
+.login-link a:hover {
+  color: #FF6B35;
+}
+
+@media (max-width: 600px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .signup-container {
+    margin-top: 80px;
+  }
+}
+</style>
   </head>
   <body>
-    {% include "ecom/navbar.html" %}
-    <div class="container">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <form class="box" method="post" enctype="multipart/form-data">
-                  {% csrf_token %}
-                    <h1>CUSTOMER SIGNUP</h1>
-                    <p class="text-muted"> Please enter your details to create account !</p>
-                      {% render_field userForm.first_name class="form-control" placeholder="First Name" %}
-                        {% render_field userForm.last_name class="form-control" placeholder="Last Name" %}
-                          {% render_field userForm.username class="form-control" placeholder="Username" %}
-                            {% render_field userForm.password class="form-control" placeholder="Password" %}
-                              {% render_field customerForm.address class="form-control" placeholder="Address" %}
-                                {% render_field customerForm.mobile class="form-control" placeholder="Mobile" %}
-                                  {% render_field customerForm.profile_pic class="form-control" placeholder="Profile pic" %}
-                  
-                     <input type="submit" name="" value="Create">
-
-                </form>
-            </div>
+    
+    <div class="signup-container">
+      <div class="signup-header">
+        <div class="signup-icon">🎉</div>
+        <h1>Create Account</h1>
+        <p>Join us and start ordering today!</p>
+      </div>
+      
+      <form class="signup-form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="form-row">
+          <div class="form-group">
+            <i class="fas fa-user"></i>
+            {% render_field userForm.first_name class="form-control" placeholder="First Name" %}
+          </div>
+          
+          <div class="form-group">
+            <i class="fas fa-user"></i>
+            {% render_field userForm.last_name class="form-control" placeholder="Last Name" %}
+          </div>
         </div>
+        
+        <div class="form-group">
+          <i class="fas fa-user-circle"></i>
+          {% render_field userForm.username class="form-control" placeholder="Username" %}
+        </div>
+        
+        <div class="form-group">
+          <i class="fas fa-lock"></i>
+          {% render_field userForm.password class="form-control" placeholder="Password" %}
+        </div>
+        
+        <div class="form-group">
+          <i class="fas fa-map-marker-alt"></i>
+          {% render_field customerForm.address class="form-control" placeholder="Address" %}
+        </div>
+        
+        <div class="form-group">
+          <i class="fas fa-phone"></i>
+          {% render_field customerForm.mobile class="form-control" placeholder="Mobile Number" %}
+        </div>
+        
+        <div class="form-group">
+          <i class="fas fa-camera"></i>
+          {% render_field customerForm.profile_pic class="form-control" placeholder="Profile Picture" %}
+        </div>
+        
+        <button type="submit" class="submit-btn">
+          <i class="fas fa-user-plus"></i> Create Account
+        </button>
+      </form>
+      
+      <div class="form-footer">
+        <p class="login-link">
+          Already have an account? 
+          <a href="/customerlogin">Login here</a>
+        </p>
+      </div>
     </div>
-</div>
-<br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br>
-{% include "ecom/footer.html" %}
   </body>
 </html>

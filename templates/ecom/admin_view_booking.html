@@ -2,76 +2,410 @@
 {% load static %}
 {% block content %}
 
-
 <head>
-  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
   <style media="screen">
-    a:link {
-      text-decoration: none;
-    }
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-    h6 {
-      text-align: center;
-    }
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%) !important;
+  min-height: 100vh;
+}
 
-    .row {
-      margin: 100px;
-    }
+.orders-container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+.page-header {
+  text-align: center;
+  color: white;
+  margin-bottom: 40px;
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.page-header p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+.orders-card {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+
+.card-header {
+  background: linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #FDC830 100%);
+  color: white;
+  padding: 25px;
+  text-align: center;
+}
+
+.card-header h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.orders-table {
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+}
+
+.orders-table thead {
+  background: #f7fafc;
+}
+
+.orders-table thead th {
+  padding: 20px 15px;
+  font-weight: 600;
+  color: #2d3748;
+  text-align: center;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.orders-table tbody td {
+  padding: 20px 15px;
+  text-align: center;
+  border-bottom: 1px solid #e2e8f0;
+  vertical-align: middle;
+  font-size: 0.95rem;
+}
+
+.orders-table tbody tr:hover {
+  background: #f8f9fa;
+  transform: translateY(-1px);
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.customer-name {
+  font-weight: 600;
+  color: #2C3E50;
+  font-size: 1.05rem;
+}
+
+.customer-mobile {
+  color: #2980B9;
+  font-weight: 500;
+}
+
+.shipment-address {
+  color: #7F8C8D;
+  max-width: 200px;
+  margin: 0 auto;
+  line-height: 1.4;
+}
+
+.product-name {
+  font-weight: 600;
+  color: #27AE60;
+  font-size: 1.05rem;
+}
+
+.product-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  border: 2px solid #e9ecef;
+}
+
+.status-badge {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-pending {
+  background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+  color: white;
+}
+
+.status-confirmed {
+  background: linear-gradient(135deg, #2980B9 0%, #3498DB 100%);
+  color: white;
+}
+
+.status-delivered {
+  background: linear-gradient(135deg, #27AE60 0%, #2ECC71 100%);
+  color: white;
+}
+
+.status-out-for-delivery {
+  background: linear-gradient(135deg, #8E44AD 0%, #9B59B6 100%);
+  color: white;
+}
+
+.action-btn {
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 4px;
+  font-size: 0.9rem;
+}
+
+.update-btn {
+  background: linear-gradient(135deg, #2980B9 0%, #3498DB 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(41,128,185,0.3);
+}
+
+.update-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(41,128,185,0.5);
+  color: white;
+  text-decoration: none;
+}
+
+.delete-btn {
+  background: linear-gradient(135deg, #E74C3C 0%, #C0392B 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(231,76,60,0.3);
+}
+
+.delete-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(231,76,60,0.5);
+  color: white;
+  text-decoration: none;
+}
+
+.no-orders {
+  text-align: center;
+  padding: 60px 20px;
+  color: #7F8C8D;
+}
+
+.no-orders i {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  color: #BDC3C7;
+}
+
+.no-orders h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #2C3E50;
+}
+
+.order-row {
+  transition: all 0.3s ease;
+}
+
+.order-row:hover {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.order-info-section {
+  background: #f8f9fa;
+  border-radius: 15px;
+  padding: 15px;
+  margin: 10px 0;
+}
+
+.order-id {
+  font-weight: 700;
+  color: #2C3E50;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 1200px) {
+  .orders-container {
+    padding: 20px 15px;
+  }
+  
+  .orders-table {
+    font-size: 0.9rem;
+  }
+  
+  .orders-table thead th {
+    padding: 15px 10px;
+  }
+  
+  .orders-table tbody td {
+    padding: 15px 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-header h1 {
+    font-size: 2rem;
+  }
+  
+  .orders-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  
+  .product-image {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .action-btn {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    margin: 2px;
+  }
+  
+  .status-badge {
+    padding: 6px 12px;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .orders-container {
+    padding: 15px 10px;
+  }
+  
+  .card-header {
+    padding: 20px;
+  }
+  
+  .card-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .action-btn span {
+    display: none;
+  }
+  
+  .action-btn {
+    padding: 10px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.order-highlight {
+  background: linear-gradient(135deg, #fff9e6 0%, #fff3cd 100%);
+  border-left: 4px solid #FF6B35;
+}
+
+.order-completed {
+  background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);
+  border-left: 4px solid #27AE60;
+}
   </style>
 </head>
-<!--
-written By : sumit kumar
-facebook : fb.com/sumit.luv
--->
-<div class="container">
-  <div class="panel panel-primary">
-    <div class="panel-heading">
-      <h6 class="panel-title">Total Orders</h6>
+
+<div class="orders-container">
+  <div class="page-header">
+    <h1><i class="fas fa-shopping-bag"></i> Order Management</h1>
+    <p>Manage and track all customer orders</p>
+  </div>
+
+  <div class="orders-card">
+    <div class="card-header">
+      <h2><i class="fas fa-list-alt"></i> Total Orders</h2>
     </div>
-    <table class="table table-hover" id="dev-table">
+    
+    {% if data %}
+    <table class="orders-table">
       <thead>
         <tr>
           <th>Customer Name</th>
           <th>Customer Mobile</th>
           <th>Shipment Address</th>
           <th>Product Name</th>
-          <th>Product Picture</th>
+          <th>Product Image</th>
           <th>Status</th>
-          <th>Update Status</th>
-          <th>Delete</th>
+          <th>Actions</th>
         </tr>
       </thead>
-      <!-- p for product, c for customer-->
-      {% for product,customer,order in data %}
-      <tr>
-        {% for c in customer %}
-        <td> {{c.get_name}}</td>
-        <td>{{c.mobile}}</td>
-        <td>{{order.address}}</td>
-
+      <tbody>
+        {% for product,customer,order in data %}
+        <tr class="order-row {% if order.status == 'Delivered' %}order-completed{% elif order.status == 'Pending' %}order-highlight{% endif %}">
+          {% for c in customer %}
+          <td>
+            <span class="customer-name">{{ c.get_name }}</span>
+          </td>
+          <td>
+            <span class="customer-mobile">{{ c.mobile }}</span>
+          </td>
+          <td>
+            <div class="shipment-address">{{ order.address }}</div>
+          </td>
+          {% endfor %}
+          
+          {% for p in product %}
+          <td>
+            <span class="product-name">{{ p.name }}</span>
+          </td>
+          <td>
+            <img src="{{ p.product_image.url }}" alt="Product Image" class="product-image" />
+          </td>
+          <td>
+            {% if order.status == 'Pending' %}
+              <span class="status-badge status-pending">{{ order.status }}</span>
+            {% elif order.status == 'Order Confirmed' %}
+              <span class="status-badge status-confirmed">{{ order.status }}</span>
+            {% elif order.status == 'Out for Delivery' %}
+              <span class="status-badge status-out-for-delivery">{{ order.status }}</span>
+            {% elif order.status == 'Delivered' %}
+              <span class="status-badge status-delivered">{{ order.status }}</span>
+            {% else %}
+              <span class="status-badge status-pending">{{ order.status }}</span>
+            {% endif %}
+          </td>
+          <td>
+            <a class="action-btn update-btn" href="{% url 'update-order' order.id %}">
+              <i class="fas fa-edit"></i>
+              <span>Update</span>
+            </a>
+            <a class="action-btn delete-btn" href="{% url 'delete-order' order.id %}">
+              <i class="fas fa-trash"></i>
+              <span>Delete</span>
+            </a>
+          </td>
+          {% endfor %}
+        </tr>
         {% endfor %}
-        {% for p in product %}
-        <td> {{p.name}}</td>
-        <td> <img src="{% static p.product_image.url %}" alt="Profile Pic" height="40px" width="40px" /></td>
-        <td>{{order.status}}</td>
-        <td><a class="btn btn-primary btn-xs" href="{% url 'update-order' order.id  %}"><span class="glyphicon glyphicon-edit"></span></a></td>
-        <td><a class="btn btn-danger btn-xs" href="{% url 'delete-order' order.id  %}"><span class="glyphicon glyphicon-trash"></span></a></td>
-
-        {% endfor %}
-
-
-
-      </tr>
-      {% endfor %}
+      </tbody>
     </table>
+    {% else %}
+    <div class="no-orders">
+      <i class="fas fa-inbox"></i>
+      <h3>No Orders Yet</h3>
+      <p>Customer orders will appear here once they start ordering.</p>
+    </div>
+    {% endif %}
   </div>
 </div>
-<!--
-developed By : sumit kumar
-facebook : fb.com/sumit.luv
-youtube : youtube.com/lazycoders
--->
+
 {% endblock content %}

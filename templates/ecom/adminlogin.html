@@ -3,102 +3,182 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>FoodDash - Admin Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style media="screen">
-      body {
-    margin: 0;
-    padding: 0;
-    font-family: sans-serif;
-    background: linear-gradient(to right, #b92b27, #1565c0)
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
 }
 
-.box {
-    width: 500px;
-    padding: 40px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    background: #191919;
-    
-    text-align: center;
-    transition: 0.25s;
-    margin-top: 100px
+body {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
 }
 
-.box input[type="text"],
-.box input[type="password"] {
-    border: 0;
-    background: none;
-    display: block;
-    margin: 20px auto;
-    text-align: center;
-    border: 2px solid #3498db;
-    padding: 10px 10px;
-    width: 250px;
-    outline: none;
-    color: white;
-    border-radius: 24px;
-    transition: 0.25s
+.admin-login-container {
+  background: white;
+  border-radius: 30px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  overflow: hidden;
+  max-width: 450px;
+  width: 100%;
+  margin-top: 80px;
 }
 
-.box h1 {
-    color: white;
-    text-transform: uppercase;
-    font-weight: 500
+.admin-login-header {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  padding: 40px 30px;
+  text-align: center;
+  color: white;
 }
 
-.box input[type="text"]:focus,
-.box input[type="password"]:focus {
-    width: 300px;
-    border-color: #2ecc71
+.admin-icon {
+  font-size: 4rem;
+  margin-bottom: 15px;
 }
 
-.box input[type="submit"] {
-    border: 0;
-    background: none;
-    display: block;
-    margin: 20px auto;
-    text-align: center;
-    border: 2px solid #2ecc71;
-    padding: 14px 40px;
-    outline: none;
-    color: white;
-    border-radius: 24px;
-    transition: 0.25s;
-    cursor: pointer
+.admin-login-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 8px;
 }
 
-.box input[type="submit"]:hover {
-    background: #2ecc71
+.admin-login-header p {
+  opacity: 0.9;
+  font-size: 0.95rem;
 }
 
+.admin-badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.2);
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-top: 10px;
+}
 
-    </style>
+.admin-login-form {
+  padding: 40px 35px;
+}
+
+.form-group {
+  margin-bottom: 25px;
+  position: relative;
+}
+
+.form-group i {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #1e3c72;
+  font-size: 1.1rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: 15px 15px 15px 50px;
+  border: 2px solid #e2e8f0;
+  border-radius: 15px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.form-control:focus {
+  border-color: #1e3c72;
+  box-shadow: 0 0 0 4px rgba(30,60,114,0.1);
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  border: none;
+  border-radius: 15px;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(30,60,114,0.4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(30,60,114,0.6);
+}
+
+.security-note {
+  text-align: center;
+  padding: 20px;
+  color: #718096;
+  font-size: 0.9rem;
+  background: #f7fafc;
+}
+
+.security-note i {
+  color: #48bb78;
+  margin-right: 5px;
+}
+
+@media (max-width: 480px) {
+  .admin-login-container {
+    margin-top: 60px;
+  }
+  
+  .admin-login-header {
+    padding: 30px 20px;
+  }
+  
+  .admin-login-form {
+    padding: 30px 25px;
+  }
+}
+</style>
   </head>
   <body>
-    {% include "ecom/navbar.html" %}
-    <div class="container">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <form class="box" method="post">
-                    {% csrf_token %}
-                    <h1>Admin Login</h1>
-                    <p class="text-muted"> Please enter your login and password!</p>
-
-                     {% render_field form.username class="form-control" placeholder="Username" %}
-                     {% render_field form.password class="form-control" placeholder="Password" %}
-
-                     <input type="submit" name="" value="Login">
-
-                </form>
-            </div>
+    <div class="admin-login-container">
+      <div class="admin-login-header">
+        <div class="admin-icon">🛡️</div>
+        <h1>Admin Panel</h1>
+        <p>Secure Administrator Access</p>
+        <span class="admin-badge"><i class="fas fa-shield-alt"></i> Protected Area</span>
+      </div>
+      
+      <form class="admin-login-form" method="post">
+        {% csrf_token %}
+        
+        <div class="form-group">
+          <i class="fas fa-user-shield"></i>
+          {% render_field form.username class="form-control" placeholder="Admin Username" %}
         </div>
+        
+        <div class="form-group">
+          <i class="fas fa-key"></i>
+          {% render_field form.password class="form-control" placeholder="Admin Password" %}
+        </div>
+        
+        <button type="submit" class="submit-btn">
+          <i class="fas fa-sign-in-alt"></i> Access Admin Panel
+        </button>
+      </form>
+      
+      <div class="security-note">
+        <i class="fas fa-lock"></i> Authorized personnel only. All access is logged and monitored.
+      </div>
     </div>
-</div>
-<br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br>
-{% include "ecom/footer.html" %}
   </body>
 </html>

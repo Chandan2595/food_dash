@@ -3,119 +3,235 @@
 {% load widget_tweaks %}
 {% block content %}
 
-  <style type="text/css">
-.form-style-1 {
-	margin:10px auto;
-	max-width: 400px;
-	padding: 20px 12px 10px 20px;
-	font: 13px "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-}
-.form-style-1 li {
-	padding: 0;
-	display: block;
-	list-style: none;
-	margin: 10px 0 0 0;
-}
-.form-style-1 label{
-	margin:0 0 3px 0;
-	padding:0px;
-	display:block;
-	font-weight: bold;
-}
-.form-style-1 input[type=text],
-.form-style-1 input[type=date],
-.form-style-1 input[type=datetime],
-.form-style-1 input[type=number],
-.form-style-1 input[type=search],
-.form-style-1 input[type=time],
-.form-style-1 input[type=url],
-.form-style-1 input[type=email],
-textarea,
-select{
-	box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	border:1px solid #BEBEBE;
-	padding: 7px;
-	margin:0px;
-	-webkit-transition: all 0.30s ease-in-out;
-	-moz-transition: all 0.30s ease-in-out;
-	-ms-transition: all 0.30s ease-in-out;
-	-o-transition: all 0.30s ease-in-out;
-	outline: none;
-}
-.form-style-1 input[type=text]:focus,
-.form-style-1 input[type=date]:focus,
-.form-style-1 input[type=datetime]:focus,
-.form-style-1 input[type=number]:focus,
-.form-style-1 input[type=search]:focus,
-.form-style-1 input[type=time]:focus,
-.form-style-1 input[type=url]:focus,
-.form-style-1 input[type=email]:focus,
-.form-style-1 textarea:focus,
-.form-style-1 select:focus{
-	-moz-box-shadow: 0 0 8px #88D5E9;
-	-webkit-box-shadow: 0 0 8px #88D5E9;
-	box-shadow: 0 0 8px #88D5E9;
-	border: 1px solid #88D5E9;
-}
-.form-style-1 .field-divided{
-	width: 49%;
+<style type="text/css">
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #FDC830 100%);
 }
 
-.form-style-1 .field-long{
-	width: 100%;
+.address-container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 20px;
 }
-.form-style-1 .field-select{
-	width: 100%;
+
+.page-header {
+  text-align: center;
+  color: white;
+  margin-bottom: 40px;
 }
-.form-style-1 .field-textarea{
-	height: 100px;
+
+.page-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
 }
-.form-style-1 input[type=submit], .form-style-1 input[type=button]{
-	background: #4B99AD;
-	padding: 8px 15px 8px 15px;
-	border: none;
-	color: #fff;
+
+.address-card {
+  background: white;
+  border-radius: 30px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  overflow: hidden;
 }
-.form-style-1 input[type=submit]:hover, .form-style-1 input[type=button]:hover{
-	background: #4691A4;
-	box-shadow:none;
-	-moz-box-shadow:none;
-	-webkit-box-shadow:none;
+
+.card-header {
+  background: linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #FDC830 100%);
+  color: white;
+  padding: 30px;
+  text-align: center;
 }
-.form-style-1 .required{
-	color:red;
+
+.card-header h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.card-header i {
+  font-size: 3rem;
+  margin-bottom: 15px;
+}
+
+.address-form {
+  padding: 40px 35px;
+}
+
+.form-group {
+  margin-bottom: 25px;
+  position: relative;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 10px;
+}
+
+.form-label i {
+  color: #667eea;
+  margin-right: 8px;
+}
+
+.required {
+  color: #e53e3e;
+  margin-left: 4px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 15px 20px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  outline: none;
+  font-family: 'Poppins', sans-serif;
+}
+
+.form-control:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 4px rgba(102,126,234,0.1);
+}
+
+.form-textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 18px;
+  background: linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #FDC830 100%);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 1.15rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(102,126,234,0.4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.submit-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(102,126,234,0.6);
+}
+
+.submit-btn i {
+  margin-right: 10px;
+}
+
+.empty-cart-message {
+  text-align: center;
+  padding: 80px 20px;
+  color: white;
+}
+
+.empty-cart-message i {
+  font-size: 5rem;
+  margin-bottom: 20px;
+  opacity: 0.8;
+}
+
+.empty-cart-message h2 {
+  font-size: 2rem;
+  margin-bottom: 15px;
+}
+
+.back-btn {
+  display: inline-block;
+  background: white;
+  color: #667eea;
+  padding: 15px 35px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 600;
+  margin-top: 20px;
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(255,255,255,0.3);
+  color: #667eea;
+  text-decoration: none;
+}
+
+@media (max-width: 600px) {
+  .address-card {
+    border-radius: 20px;
+  }
+  
+  .card-header {
+    padding: 25px 20px;
+  }
+  
+  .address-form {
+    padding: 30px 25px;
+  }
 }
 </style>
-{%if product_in_cart%}
-<form method="post">
-  {% csrf_token %}
-<ul class="form-style-1">
-    <li>
-        <label>Email <span class="required">*</span></label>
-        {% render_field addressForm.Email class="field-long" placeholder="Email" %}
 
-    </li>
-    <li>
-        <label>Mobile <span class="required">*</span></label>
-        {% render_field addressForm.Mobile class="field-long" placeholder="Mobile" %}
-    </li>
+{% if product_in_cart %}
+<div class="address-container">
+  <div class="page-header">
+    <h1><i class="fas fa-map-marker-alt"></i> Delivery Details</h1>
+    <p>Where should we deliver your order?</p>
+  </div>
 
-    <li>
-        <label>Shipment Address <span class="required">*</span></label>
-        {% render_field addressForm.Address id="field5" class="field-long field-textarea" placeholder="Building Number,city, pin" %}
+  <div class="address-card">
+    <div class="card-header">
+      <i class="fas fa-shipping-fast"></i>
+      <h2>Shipping Information</h2>
+      <p>Please provide your delivery details</p>
+    </div>
 
-    </li>
-    <li>
-        <input type="submit" value="Proceed To Pay" />
-    </li>
-</ul>
-</form>
-{%else%}
-<br><br>
-<h1 style="text-align:center; color:red;"> First Add Product In Cart </h1>
-<br><br><br><br><br><br><br><br><br><br>
-{%endif%}
+    <form class="address-form" method="post">
+      {% csrf_token %}
+      
+      <div class="form-group">
+        <label class="form-label">
+          <i class="fas fa-envelope"></i> Email Address <span class="required">*</span>
+        </label>
+        {% render_field addressForm.Email class="form-control" placeholder="your.email@example.com" %}
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">
+          <i class="fas fa-phone"></i> Mobile Number <span class="required">*</span>
+        </label>
+        {% render_field addressForm.Mobile class="form-control" placeholder="Enter your mobile number" %}
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">
+          <i class="fas fa-map-marked-alt"></i> Delivery Address <span class="required">*</span>
+        </label>
+        {% render_field addressForm.Address class="form-control form-textarea" placeholder="Building Number, Street, City, PIN Code" %}
+      </div>
+
+      <button type="submit" class="submit-btn">
+        <i class="fas fa-arrow-right"></i> Proceed to Payment
+      </button>
+    </form>
+  </div>
+</div>
+
+{% else %}
+<div class="empty-cart-message">
+  <i class="fas fa-shopping-cart"></i>
+  <h2>Your Cart is Empty!</h2>
+  <p>Please add items to your cart before proceeding to checkout</p>
+  <a href="/" class="back-btn">
+    <i class="fas fa-arrow-left"></i> Browse Menu
+  </a>
+</div>
+{% endif %}
 
 {% endblock content %}

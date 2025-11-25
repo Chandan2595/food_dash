@@ -128,7 +128,7 @@ def admin_products_view(request):
     products=models.Product.objects.all()
     return render(request,'ecom/admin_products.html',{'products':products})
 
-
+""" 
 # admin add product by clicking on floating button
 @login_required(login_url='adminlogin')
 def admin_add_product_view(request):
@@ -139,6 +139,65 @@ def admin_add_product_view(request):
             productForm.save()
         return HttpResponseRedirect('admin-products')
     return render(request,'ecom/admin_add_products.html',{'productForm':productForm})
+
+
+ """
+
+import os
+from django.core.files.storage import default_storage
+from django.conf import settings
+from .forms import ProductForm
+import boto3
+from botocore.exceptions import NoCredentialsError, PartialCredentialsError
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+
+def store_images_in_s3(file_path, object_name=None):
+
+    bucket_name = "x23282061-cpp-s3"
+    if object_name is None:
+        object_name = os.path.basename(file_path)
+
+    s3_client = boto3.client('s3', region_name="us-east-1")
+
+    try:
+        with open(file_path, "rb") as file_data:
+            s3_client.upload_fileobj(file_data, bucket_name, object_name)
+        print(f" Successfully uploaded {object_name} to {bucket_name}")
+        return True
+    except FileNotFoundError:
+        print(f" The file {file_path} was not found.")
+        return False
+    except NoCredentialsError:
+        print(" AWS credentials not available.")
+        return False
+    except PartialCredentialsError:
+        print(" Incomplete AWS credentials provided.")
+        return False
+    except Exception as e:
+        print(f" An unexpected error occurred: {e}")
+        return False
+
+
+
+from django.conf import settings
+import os
+
+@login_required(login_url='adminlogin')
+def admin_add_product_view(request):
+    productForm = forms.ProductForm()
+    if request.method == 'POST':
+        productForm = forms.ProductForm(request.POST, request.FILES)
+        if productForm.is_valid():
+            product = productForm.save()
+
+            if product.product_image:  # Assuming model field is named `product_image`
+                local_file_path = os.path.join(settings.MEDIA_ROOT, product.product_image.name)
+                store_images_in_s3(local_file_path, f"product_image/{product.product_image.name}")
+
+        return HttpResponseRedirect('admin-products')
+    return render(request, 'ecom/admin_add_products.html', {'productForm': productForm})
 
 
 @login_required(login_url='adminlogin')
@@ -230,11 +289,13 @@ def add_to_cart_view(request,pk):
     if 'product_ids' in request.COOKIES:
         product_ids = request.COOKIES['product_ids']
         counter=product_ids.split('|')
-        product_count_in_cart=len(set(counter))
+        #product_count_in_cart=len(set(counter))
+        product_count_in_cart = len(counter)
     else:
         product_count_in_cart=1
 
     response = render(request, 'ecom/index.html',{'products':products,'product_count_in_cart':product_count_in_cart})
+    #response = render(request, 'ecom/index.html', {'products': products, 'product_count_in_cart': product_count_in_cart})
 
     #adding product id to cookies
     if 'product_ids' in request.COOKIES:
@@ -254,13 +315,17 @@ def add_to_cart_view(request,pk):
 
 
 
+
+""" 
+
 # for checkout of cart
 def cart_view(request):
     #for cart counter
     if 'product_ids' in request.COOKIES:
         product_ids = request.COOKIES['product_ids']
         counter=product_ids.split('|')
-        product_count_in_cart=len(set(counter))
+        #product_count_in_cart=len(set(counter))
+        product_count_in_cart = len(counter) 
     else:
         product_count_in_cart=0
 
@@ -277,6 +342,81 @@ def cart_view(request):
             for p in products:
                 total=total+p.price
     return render(request,'ecom/cart.html',{'products':products,'total':total,'product_count_in_cart':product_count_in_cart})
+
+ """
+
+from collections import Counter
+
+# def cart_view(request):
+#     product_count_in_cart = 0
+#     products = []
+#     total = 0
+
+#     if 'product_ids' in request.COOKIES:
+#         product_ids = request.COOKIES['product_ids']
+#         if product_ids:
+#             product_id_list = product_ids.split('|')
+#             product_count_in_cart = len(product_id_list)
+
+#             # Count quantities of each product
+#             id_counts = Counter(product_id_list)
+
+#             # Fetch unique product objects
+#             unique_ids = list(id_counts.keys())
+#             products_queryset = models.Product.objects.filter(id__in=unique_ids)
+
+#             # Multiply each product price by its quantity
+#             for product in products_queryset:
+#                 quantity = id_counts[str(product.id)]
+#                 total += product.price * quantity
+
+#                 # Attach quantity to each product for the template
+#                 product.quantity = quantity
+#                 products.append(product)
+
+#     return render(request, 'ecom/cart.html', {
+#         'products': products,
+#         'total': total,
+#         'product_count_in_cart': product_count_in_cart
+#     })
+
+
+
+from food_total_lib import food_bill
+
+
+
+def cart_view(request):
+    product_count_in_cart = 0
+    products_output = []
+    total = 0
+
+    if "product_ids" in request.COOKIES:
+        product_ids = request.COOKIES['product_ids']
+
+        if product_ids:
+            product_id_list = product_ids.split('|')
+            product_count_in_cart = len(product_id_list)
+
+            # Fetch products from DB
+            products_queryset = models.Product.objects.filter(id__in=product_id_list)
+
+            result = food_bill(products_queryset, product_id_list)
+
+            total = result["total"]
+            products_output = result["products"]
+
+    return render(request, "ecom/cart.html", {
+        "products": products_output,
+        "total": total,
+        "product_count_in_cart": product_count_in_cart,
+    })
+
+
+
+
+
+
 
 
 def remove_from_cart_view(request,pk):
@@ -339,7 +479,7 @@ def customer_home_view(request):
         product_count_in_cart=0
     return render(request,'ecom/customer_home.html',{'products':products,'product_count_in_cart':product_count_in_cart})
 
-
+""" 
 
 # shipment address before placing order
 @login_required(login_url='customerlogin')
@@ -355,7 +495,8 @@ def customer_address_view(request):
     if 'product_ids' in request.COOKIES:
         product_ids = request.COOKIES['product_ids']
         counter=product_ids.split('|')
-        product_count_in_cart=len(set(counter))
+        #product_count_in_cart=len(set(counter))
+        product_count_in_cart=len(counter)
     else:
         product_count_in_cart=0
 
@@ -387,8 +528,77 @@ def customer_address_view(request):
     return render(request,'ecom/customer_address.html',{'addressForm':addressForm,'product_in_cart':product_in_cart,'product_count_in_cart':product_count_in_cart})
 
 
+ """
 
 
+
+
+
+from collections import Counter
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from . import forms, models  # ensure your forms and models are properly imported
+
+# shipment address before placing order
+@login_required(login_url='customerlogin')
+def customer_address_view(request):
+    # this is for checking whether product is present in cart or not
+    product_in_cart = False
+    if 'product_ids' in request.COOKIES:
+        product_ids = request.COOKIES['product_ids']
+        if product_ids != "":
+            product_in_cart = True
+
+    # for counter in cart
+    if 'product_ids' in request.COOKIES:
+        product_ids = request.COOKIES['product_ids']
+        counter = product_ids.split('|')
+        product_count_in_cart = len(counter)
+    else:
+        product_count_in_cart = 0
+
+    addressForm = forms.AddressForm()
+    if request.method == 'POST':
+        addressForm = forms.AddressForm(request.POST)
+        if addressForm.is_valid():
+            # Get form data
+            email = addressForm.cleaned_data['Email']
+            mobile = addressForm.cleaned_data['Mobile']
+            address = addressForm.cleaned_data['Address']
+
+            # Calculate total price considering quantity
+            total = 0
+            if 'product_ids' in request.COOKIES:
+                product_ids = request.COOKIES['product_ids']
+                if product_ids != "":
+                    product_id_list = product_ids.split('|')
+                    product_counter = Counter(product_id_list)  # quantity of each product
+                    product_ids_unique = list(product_counter.keys())
+                    products = models.Product.objects.filter(id__in=product_ids_unique)
+                    for product in products:
+                        quantity = product_counter[str(product.id)]
+                        total += product.price * quantity
+
+            # Pass total to payment page
+            response = render(request, 'ecom/payment.html', {
+                'total': total
+            })
+            response.set_cookie('email', email)
+            response.set_cookie('mobile', mobile)
+            response.set_cookie('address', address)
+            return response
+
+    return render(request, 'ecom/customer_address.html', {
+        'addressForm': addressForm,
+        'product_in_cart': product_in_cart,
+        'product_count_in_cart': product_count_in_cart
+    })
+
+
+
+
+
+""" 
 # here we are just directing to this view...actually we have to check whther payment is successful or not
 #then only this view should be accessed
 @login_required(login_url='customerlogin')
@@ -431,6 +641,103 @@ def payment_success_view(request):
     response.delete_cookie('mobile')
     response.delete_cookie('address')
     return response
+ """
+
+
+
+
+
+import requests
+import json
+from django.http import JsonResponse
+
+
+
+def send_email_with_sns(subject, message,name, product, email, phone):
+    SNS_TOPIC_ARN = "arn:aws:sns:us-east-1:758213694299:x23282061-CPP-SNS"
+    
+    full_message = f"""New Order details:\n Customer Name: {name}\n Product: {product}\n Email: {email}\n Phone: {phone}\n Message: {message}\n
+    """
+
+    try:
+        # Use the correct region (eu-west-2)
+        sns_client = boto3.client("sns", region_name="us-east-1",)  
+        
+        response = sns_client.publish(
+            TopicArn=SNS_TOPIC_ARN,
+            Message=full_message,
+            Subject=subject
+        )
+        
+        print(f"Email sent successfully! Message ID: {response['MessageId']}")
+        return True
+
+    except Exception as e:
+        print(f"Error sending email: {e}")
+        return False
+
+
+from payment_date_time import get_current_datetime
+
+
+@login_required(login_url='customerlogin')
+def payment_success_view(request):
+    customer = models.Customer.objects.get(user_id=request.user.id)
+    products = None
+    email = None
+    mobile = None
+    address = None
+
+    if 'product_ids' in request.COOKIES:
+        product_ids = request.COOKIES['product_ids']
+        if product_ids != "":
+            product_id_in_cart = product_ids.split('|')
+            products = models.Product.objects.filter(id__in=product_id_in_cart)
+
+    if 'email' in request.COOKIES:
+        email = request.COOKIES['email']
+    if 'mobile' in request.COOKIES:
+        mobile = request.COOKIES['mobile']
+    if 'address' in request.COOKIES:
+        address = request.COOKIES['address']
+
+    product_names = []
+
+    for product in products:
+        models.Orders.objects.get_or_create(
+            customer=customer,
+            product=product,
+            status='Pending',
+            email=email,
+            mobile=mobile,
+            address=address
+        )
+        product_names.append(product.name)
+
+    #  Send SNS Email after placing all orders
+    subject = "New Order Placed"
+    message = "A new order has been placed successfully."
+
+    send_email_with_sns(
+        subject=subject,
+        message=message,
+        name=customer.get_name,
+        product=", ".join(product_names),
+        email=email,
+        phone=mobile
+    )
+
+    print("Email sent successfully after placing order.", subject)
+
+    payment_date_time = get_current_datetime()
+
+    #  Clear cookies
+    response = render(request, 'ecom/payment_success.html', {'payment_date_time': payment_date_time})
+    response.delete_cookie('product_ids')
+    response.delete_cookie('email')
+    response.delete_cookie('mobile')
+    response.delete_cookie('address')
+    return response
 
 
 
@@ -467,30 +774,65 @@ def render_to_pdf(template_src, context_dict):
         return HttpResponse(result.getvalue(), content_type='application/pdf')
     return
 
+
+
 @login_required(login_url='customerlogin')
 @user_passes_test(is_customer)
-def download_invoice_view(request,orderID,productID):
-    order=models.Orders.objects.get(id=orderID)
-    product=models.Product.objects.get(id=productID)
-    mydict={
-        'orderDate':order.order_date,
-        'customerName':request.user,
-        'customerEmail':order.email,
-        'customerMobile':order.mobile,
-        'shipmentAddress':order.address,
-        'orderStatus':order.status,
+def download_invoice_view(request, orderID, productID):
+    order = models.Orders.objects.get(id=orderID)
+    product = models.Product.objects.get(id=productID)
 
-        'productName':product.name,
-        'productImage':product.product_image,
-        'productPrice':product.price,
-        'productDescription':product.description,
+    
+    data = get_invoice_number_and_date()
+    print(data["invoice_number"])
+    print(data["date"])
+    
+    invoice_no = data["invoice_number"]
+    order_date = data["date"]
+    
+    print(f"------------------->  Invoice No: {invoice_no}")
 
-
+    mydict = {
+        'invoiceNo': invoice_no,
+        'orderDate': order_date,
+        'customerName': request.user,
+        'customerEmail': order.email,
+        'customerMobile': order.mobile,
+        'shipmentAddress': order.address,
+        'orderStatus': order.status,
+        'productName': product.name,
+        'productImage': product.product_image,
+        'productPrice': product.price,
+        'productDescription': product.description,
     }
-    return render_to_pdf('ecom/download_invoice.html',mydict)
+    return render_to_pdf('ecom/download_invoice.html', mydict)
+
+import requests
+import json
 
 
-
+def get_invoice_number_and_date():
+    try:
+        url = "https://g3khh4gzuh.execute-api.us-east-1.amazonaws.com/deploy/x23282061-CPP-LAMBDA"
+        response = requests.get(url)
+    
+        print("RAW TEXT =>", response.text)
+        print("STATUS   =>", response.status_code)
+    
+        outer = response.json()
+        print("PARSED OUTER =>", outer)
+    
+        # ❗ No body key – read directly
+        invoice_no = outer.get("invoice_number", "N/A")
+        invoice_date = outer.get("date", "N/A")
+    
+        return {
+            "invoice_number": invoice_no,
+            "date": invoice_date
+        }
+    
+    except Exception as e:
+        return {"error": str(e)}
 
 
 
@@ -520,22 +862,3 @@ def edit_profile_view(request):
             return HttpResponseRedirect('my-profile')
     return render(request,'ecom/edit_profile.html',context=mydict)
 
-
-
-#---------------------------------------------------------------------------------
-#------------------------ ABOUT US AND CONTACT US VIEWS START --------------------
-#---------------------------------------------------------------------------------
-def aboutus_view(request):
-    return render(request,'ecom/aboutus.html')
-
-def contactus_view(request):
-    sub = forms.ContactusForm()
-    if request.method == 'POST':
-        sub = forms.ContactusForm(request.POST)
-        if sub.is_valid():
-            email = sub.cleaned_data['Email']
-            name=sub.cleaned_data['Name']
-            message = sub.cleaned_data['Message']
-            send_mail(str(name)+' || '+str(email),message, settings.EMAIL_HOST_USER, settings.EMAIL_RECEIVING_USER, fail_silently = False)
-            return render(request, 'ecom/contactussuccess.html')
-    return render(request, 'ecom/contactus.html', {'form':sub})

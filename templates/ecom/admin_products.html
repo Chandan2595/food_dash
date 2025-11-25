@@ -2,92 +2,278 @@
 {% load static %}
 {% block content %}
 
-
 <head>
-  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
   <style media="screen">
-    a:link {
-      text-decoration: none;
-    }
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-    h6 {
-      text-align: center;
-    }
-
-    .row {
-      margin: 100px;
-    }
-
-    .float{
-	position:fixed;
-	width:70px;
-	height:70px;
-	bottom:60px;
-	right:60px;
-	background-color:red;
-	color:#FFF;
-	border-radius:50px;
-	text-align:center;
-	box-shadow: 3px 3px 3px #999;
+body {
+  font-family: 'Poppins', sans-serif;
 }
 
-.my-float{
-	margin-top:22px;
+.products-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 30px 20px;
 }
-  </style>
+
+.page-header {
+  text-align: center;
+  color: white;
+  margin-bottom: 40px;
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.products-card {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  overflow: hidden;
+}
+
+.card-header {
+  background: linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #FDC830 100%);
+  color: white;
+  padding: 25px;
+  text-align: center;
+}
+
+.card-header h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.products-table {
+  width: 100%;
+  margin: 0;
+}
+
+.products-table thead {
+  background: #f7fafc;
+}
+
+.products-table thead th {
+  padding: 20px 15px;
+  font-weight: 600;
+  color: #2d3748;
+  text-align: center;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.products-table tbody td {
+  padding: 20px 15px;
+  text-align: center;
+  border-bottom: 1px solid #e2e8f0;
+  vertical-align: middle;
+}
+
+.products-table tbody tr:hover {
+  background: #f7fafc;
+}
+
+.product-name {
+  font-weight: 600;
+  color: #2d3748;
+  font-size: 1.05rem;
+}
+
+.product-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.product-price {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #667eea;
+}
+
+.product-description {
+  color: #718096;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.action-btn {
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  margin: 0 5px;
+}
+
+.update-btn {
+  background: linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #FDC830 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+}
+
+.update-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(102,126,234,0.5);
+  color: white;
+  text-decoration: none;
+}
+
+.delete-btn {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(255,107,107,0.3);
+}
+
+.delete-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255,107,107,0.5);
+  color: white;
+  text-decoration: none;
+}
+
+.floating-add-btn {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #FDC830 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  box-shadow: 0 8px 25px rgba(102,126,234,0.5);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  z-index: 999;
+}
+
+.floating-add-btn:hover {
+  transform: scale(1.1) rotate(90deg);
+  box-shadow: 0 12px 35px rgba(102,126,234,0.7);
+  color: white;
+  text-decoration: none;
+}
+
+.no-products {
+  text-align: center;
+  padding: 60px 20px;
+  color: #718096;
+}
+
+.no-products i {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  color: #cbd5e0;
+}
+
+.no-products h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #2d3748;
+}
+
+@media (max-width: 768px) {
+  .products-table {
+    font-size: 0.85rem;
+  }
+  
+  .product-image {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .action-btn {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    margin: 3px;
+  }
+  
+  .floating-add-btn {
+    width: 60px;
+    height: 60px;
+    bottom: 30px;
+    right: 30px;
+    font-size: 1.5rem;
+  }
+}
+</style>
 </head>
-<!--
-written By : sumit kumar
-facebook : fb.com/sumit.luv
--->
 
+<div class="products-container">
+  <div class="page-header">
+    <h1><i class="fas fa-utensils"></i> Product Management</h1>
+    <p>Manage your food menu</p>
+  </div>
 
-<div class="container">
-  <div class="panel panel-primary">
-    <div class="panel-heading">
-      <h6 class="panel-title">Total Product List</h6>
+  <div class="products-card">
+    <div class="card-header">
+      <h2><i class="fas fa-list"></i> All Products</h2>
     </div>
-    <table class="table table-hover" id="dev-table">
+    
+    {% if products %}
+    <table class="products-table">
       <thead>
         <tr>
           <th>Name</th>
           <th>Image</th>
           <th>Price</th>
           <th>Description</th>
-          <th>Update</th>
-          <th>Delete</th>
+          <th>Actions</th>
         </tr>
       </thead>
-      {% for p in products %}
-  {% if p %}
-
-      <tr>
-        <td> {{p.name}}</td>
-        <td> <img src="{% static p.product_image.url %}" alt="Profile Pic" height="40px" width="40px" /></td>
-        <td>{{p.price}}</td>
-        <td>{{p.description}}</td>
-        <td><a class="btn btn-primary btn-xs" href="{% url 'update-product' p.id  %}"><span class="glyphicon glyphicon-edit"></span></a></td>
-        <td><a class="btn btn-danger btn-xs" href="{% url 'delete-product' p.id  %}"><span class="glyphicon glyphicon-trash"></span></a></td>
-
-      </tr>
-      {%else%}
-      <br><br><br>
-      <h1>no products</h1>
-      {% endif %}
-      {% endfor %}
+      <tbody>
+        {% for p in products %}
+        <tr>
+          <td><span class="product-name">{{ p.name }}</span></td>
+          <td>
+            {% if p.product_image %}
+              <img src="{{ p.product_image.url }}" alt="Product" class="product-image" />
+            {% else %}
+              <div style="width: 100px; height: 100px; background: #f0f0f0; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                <i class="fas fa-image" style="font-size: 2rem; color: #ccc;"></i>
+              </div>
+            {% endif %}
+          </td>
+          <td><span class="product-price">${{ p.price }}</span></td>
+          <td><p class="product-description">{{ p.description }}</p></td>
+          <td>
+            <a class="action-btn update-btn" href="{% url 'update-product' p.id %}">
+              <i class="fas fa-edit"></i> Edit
+            </a>
+            <a class="action-btn delete-btn" href="{% url 'delete-product' p.id %}">
+              <i class="fas fa-trash"></i> Delete
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
     </table>
+    {% else %}
+    <div class="no-products">
+      <i class="fas fa-inbox"></i>
+      <h3>No Products Yet</h3>
+      <p>Start by adding your first product!</p>
+    </div>
+    {% endif %}
   </div>
 </div>
-<!-- add product floating button -->
-<a href="/admin-add-product" class="float">
-<i class="fa fa-plus my-float"></i>
+
+<a href="/admin-add-product" class="floating-add-btn">
+  <i class="fas fa-plus"></i>
 </a>
-<!--
-developed By : sumit kumar
-facebook : fb.com/sumit.luv
-youtube : youtube.com/lazycoders
--->
+
 {% endblock content %}
